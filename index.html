@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>API Project</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Indie+Flower" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" media="screen" href="style.css" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.4/handlebars.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
+
+</head>
+
+<script id="user-container-template" type="text/x-handlebars-template">
+    <img id="profile-pic" src="{{userImageLink}}" />
+    <div class="user-info">
+        <div class="user-container__user-name">{{userName}}</div>
+        <div class="user-container__user-adress">{{userAdress}}</div>
+    </div>
+</script>
+
+<script id="pokemon-container-template" type="text/x-handlebars-template">
+    <img id="pokemon-image" src="{{pokemonPictureLink}}" />
+    <div class="pokemon-container__user-info">
+        <span class="pokemon-container__title">Favorite pokemon:</span>
+        <span id="pokemon-text">{{pokemonName}}</span>
+    </div>
+</script>
+
+<body>
+    <div class="container">	
+        <div class="user-container"></div>	
+        <div class="quote-container"></div>	
+        <div class="content-container">	
+            <div class="pokemon-container"></div>	
+            <div class="meat-container"></div>	
+        </div>	
+        <div class="friends">	
+            <h4>Friends</h4>	
+            <div class="friends-container">	
+            </div>	
+        </div>	
+        <div class="buttons">	
+            <button id="generate-user">Generate User</button>	
+        </div>	
+    </div>
+
+    <script src="APIManager.js"></script>
+    <script src="Renderer.js"></script>
+    <script src="main.js"></script>
+</body>
+
+</html>
