@@ -16,10 +16,10 @@ class Renderer {
     $(".quote-container").append(
       $(
         `
-                <p>Favorite quote:</p>
-                <div>"${quote}"</div>
-                <div>-Kanye West</div>
-            `
+            <p>Favorite quote:</p>
+            <div>"${quote}"</div>
+            <div>-Kanye West</div>
+        `
       )
     );
   }
@@ -50,12 +50,25 @@ class Renderer {
 
     })
   }
+  renderSavedUsersDropdown(savedUsers){
+    const savedUsersDropdownContainer = $("#saved-users-dropdown-container")
+    const savedUsersDropdown = $(`<select id="saved-users-dropdown" name="saved-users-dropdown"></select>`);
+    savedUsersDropdownContainer.html("");
+    for(let i = 0; i < savedUsers.length; i++){
+      savedUsersDropdown.append(`<option value=${i}>${savedUsers[i].pageData.user.userName}</option>`)
+    }
 
-  renderData(data) {
+    savedUsersDropdownContainer.append(savedUsersDropdown);
+  }
+
+  renderData(data, savedUsers) {
     this.renderPokemonContainer(data.pokemon);
     this.renderUserContainer(data.user);
     this.renderQuoteContainer(data.quote);
     this.renderFriendsContainer(data.friends);
     this.renderMeatContainer(data.meat);
+    if (savedUsers.length !== 0){
+      this.renderSavedUsersDropdown(savedUsers)
+    }
   }
 }

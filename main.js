@@ -1,7 +1,7 @@
 const renderer = new Renderer();
 const apiManager = new APIManager();
 
-loadPage = () => {
+generateUser = () => {
   const userAndFriendsPromise = apiManager.getUserAndFriendsData();
   const pokemonPromise = apiManager.getPokemonData();
   const quotePromise = apiManager.getQuoteData();
@@ -14,19 +14,30 @@ loadPage = () => {
     meatPromise,
   ]).then((promiseResults) => {
     let [userAndFriendsData, pokemonData, quoteData, meatData] = promiseResults;
-    const page = new PageData(
+    apiManager.generatedPage = new PageData(
       userAndFriendsData.user,
       quoteData.quote,
       pokemonData,
       userAndFriendsData.friends,
       meatData
     );
-    renderer.renderData(page.pageData)
-    // apiManager.data.push(page);
-    // renderer.renderData(apiManager.data[apiManager.data.length - 1].pageData);
+
+    renderer.renderData(
+      apiManager.generatedPage.pageData,
+      apiManager.savedUsers
+    );
   });
 };
 
-const loadData = $("#generate-user").on("click", loadPage);
+$("#generate-user").on("click", generateUser);
+$("#save-user").on("click", () => {
+  apiManager.savedUsers.push(apiManager.generatedPage);
+  renderer.renderData(apiManager.generatedPage.pageData, apiManager.savedUsers);
+});
+$("#load-user").on("click", () => {
+  const savedUsersDropdown = $("#saved-users-dropdown")
+  console.log(savedUsersDropdown)
+  renderer.renderData(apiManager.savedUsers[parseInt(savedUsersDropdown.val())].pageData, apiManager.savedUsers);
+});
 
-loadPage();
+generateUser();

@@ -1,6 +1,7 @@
 class APIManager {
   constructor() {
-    this.data = [];
+    this.generatedPage = {};
+    this.savedUsers = []
     this.usersURL = "https://randomuser.me/api/?results=7";
     this.pokemonURL = "https://pokeapi.co/api/v2/pokemon/";
     this.quoteURL = "https://api.kanye.rest";
