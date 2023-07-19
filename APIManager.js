@@ -1,12 +1,44 @@
+"use strict";
+
 class APIManager {
   constructor() {
-    this.generatedPage = {};
-    this.savedUsers = []
-    this.usersURL = "https://randomuser.me/api/?results=7";
-    this.pokemonURL = "https://pokeapi.co/api/v2/pokemon/";
-    this.quoteURL = "https://api.kanye.rest";
-    this.meatURL =
+    this._generatedPerson = {};
+    this._savedUsers = [];
+    this._usersURL = "https://randomuser.me/api/?results=7";
+    this._pokemonURL = "https://pokeapi.co/api/v2/pokemon/";
+    this._quoteURL = "https://api.kanye.rest";
+    this._meatURL =
       "https://baconipsum.com/api/?type=all-meat&format=json&paras=";
+  }
+
+  static getRandomNumber(min, max) {
+    return Math.floor(Math.random() * (max - min) + min);
+  }
+
+  static getCopy(obj) {
+    return JSON.parse(JSON.stringify(obj));
+  }
+
+  get generatedPerson() {
+    return APIManager.getCopy({
+      "user": this._generatedPerson.user,
+      "quote": this._generatedPerson.quote,
+      "pokemon": this._generatedPerson.pokemon,
+      "friends": this._generatedPerson.friends,
+      "meat": this._generatedPerson.meat
+    });
+  }
+
+  set generatedPerson(person) {
+    this._generatedPerson = person;
+  }
+
+  get savedUsers() {
+    return APIManager.getCopy(this._savedUsers);
+  }
+
+  set savedUsers(val) {
+    this._savedUsers.push(val);
   }
 
   fetchData(url) {
@@ -27,12 +59,8 @@ class APIManager {
     });
   }
 
-  getRandomNumber(min, max) {
-    return Math.floor(Math.random() * (max - min) + min);
-  }
-
   getUserAndFriendsData() {
-    return this.fetchData(this.usersURL).then((data) => {
+    return this.fetchData(this._usersURL).then((data) => {
       let user = {};
       const friends = [];
       for (let i = 0; i < data.results.length; i++) {
@@ -54,7 +82,7 @@ class APIManager {
 
   getPokemonData() {
     return this.fetchData(
-      this.pokemonURL + this.getRandomNumber(1, 1010).toString() + "/"
+      this._pokemonURL + APIManager.getRandomNumber(1, 1010).toString() + "/"
     ).then((data) => {
       return {
         pokemonPictureLink: data.sprites.front_default,
@@ -63,22 +91,66 @@ class APIManager {
     });
   }
   getQuoteData() {
-    return this.fetchData(this.quoteURL);
+    return this.fetchData(this._quoteURL);
   }
 
   getMeatData() {
-    return this.fetchData(this.meatURL + this.getRandomNumber(1, 3).toString());
+    return this.fetchData(
+      this._meatURL + APIManager.getRandomNumber(1, 3).toString()
+    );
+  }
+  getAllData() {
+    const userAndFriendsPromise = apiManager.getUserAndFriendsData();
+    const pokemonPromise = apiManager.getPokemonData();
+    const quotePromise = apiManager.getQuoteData();
+    const meatPromise = apiManager.getMeatData();
+
+    return Promise.all([
+      userAndFriendsPromise,
+      pokemonPromise,
+      quotePromise,
+      meatPromise,
+    ]);
   }
 }
 
-class PageData {
+class PersonData {
   constructor(user, quote, pokemon, friends, meat) {
-    this.pageData = {
-      user: user,
-      quote: quote,
-      pokemon: pokemon,
-      friends: friends,
-      meat: meat,
-    };
+    this._user = user;
+    this._quote = quote;
+    this._pokemon = pokemon;
+    this._friends = friends;
+    this._meat = meat;
+  }
+
+  get user(){
+    return APIManager.getCopy(this._user)
+  }
+  set user(val){
+    this._user = val
+  }
+  get quote(){
+    return APIManager.getCopy(this._quote)
+  }
+  set quote(val){
+    this._quote = val
+  }
+  get pokemon(){
+    return APIManager.getCopy(this._pokemon)
+  }
+  set pokemon(val){
+    this._pokemon = val
+  }
+  get friends(){
+    return APIManager.getCopy(this._friends)
+  }
+  set friends(val){
+    this._friends = val
+  }
+  get meat(){
+    return APIManager.getCopy(this._meat)
+  }
+  set meat(val){
+    this._meat = val
   }
 }

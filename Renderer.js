@@ -1,19 +1,29 @@
+"use strict";
+
 class Renderer {
-  constructor() {}
+  constructor() {
+    this._userContainerTemplate = Handlebars.compile($("#user-container-template").html());
+    this._pokemonContainerTemplate = Handlebars.compile($("#pokemon-container-template").html());
+
+    this._userContainer = $(".user-container");
+    this._quoteContainer = $(".quote-container")
+    this._friendsContainer = $(".friends-container");
+    this._pokemonContainer = $(".pokemon-container");
+    this._meatContainer = $(".meat-container")
+    this._savedUsersDropdownContainer = $("#saved-users-dropdown-container")
+  }
   renderUserContainer(user) {
-    const source = $("#user-container-template").html();
-    const template = Handlebars.compile(source);
-    const userInfoHTML = template({
+    const userInfoHTML = this._userContainerTemplate({
       userImageLink: user.userImageLink,
       userName: user.userName,
       userAdress: user.userAdress,
     });
-    $(".user-container").html("");
-    $(".user-container").append(userInfoHTML);
+    this._userContainer.html("");
+    this._userContainer.append(userInfoHTML);
   }
   renderQuoteContainer(quote) {
-    $(".quote-container").html("");
-    $(".quote-container").append(
+    this._quoteContainer.html("");
+    this._quoteContainer.append(
       $(
         `
             <p>Favorite quote:</p>
@@ -24,41 +34,38 @@ class Renderer {
     );
   }
   renderPokemonContainer(pokemon) {
-    const source = $("#pokemon-container-template").html();
-    const template = Handlebars.compile(source);
-    const pokemonInfoHTML = template({
+    const pokemonInfoHTML = this._pokemonContainerTemplate({
       pokemonPictureLink: pokemon.pokemonPictureLink,
       pokemonName: pokemon.pokemonName,
     });
-    $(".pokemon-container").html("");
-    $(".pokemon-container").append(pokemonInfoHTML);
+    this._pokemonContainer.html("");
+    this._pokemonContainer.append(pokemonInfoHTML);
   }
   renderFriendsContainer(friends) {
-    const friendsContainer = $(".friends-container");
-    friendsContainer.html("");
+    
+    this._friendsContainer.html("");
     const friendsList = $("<ul></ul>");
 
     friends.forEach((friend) => friendsList.append(`<li>${friend}</li>`));
-    friendsContainer.append(friendsList);
+    this._friendsContainer.append(friendsList);
   }
 
-  renderMeatContainer(meat){
-    const meatContainer = $(".meat-container")
-    meatContainer.html("<h4>About me</h4>")
-    meat.forEach(el => {
-        meatContainer.append(`<p class="meat-text">${el}</p>`);
+  renderMeatContainer(meatArr){
+    this._meatContainer.html("<h4>About me</h4>")
+    meatArr.forEach(el => {
+      this._meatContainer.append(`<p class="meat-text">${el}</p>`);
 
     })
   }
   renderSavedUsersDropdown(savedUsers){
-    const savedUsersDropdownContainer = $("#saved-users-dropdown-container")
+     
     const savedUsersDropdown = $(`<select id="saved-users-dropdown" name="saved-users-dropdown"></select>`);
-    savedUsersDropdownContainer.html("");
+    this._savedUsersDropdownContainer.html("");
     for(let i = 0; i < savedUsers.length; i++){
-      savedUsersDropdown.append(`<option value=${i}>${savedUsers[i].pageData.user.userName}</option>`)
+      savedUsersDropdown.append(`<option value=${i}>${savedUsers[i].user.userName}</option>`)
     }
 
-    savedUsersDropdownContainer.append(savedUsersDropdown);
+    this._savedUsersDropdownContainer.append(savedUsersDropdown);
   }
 
   renderData(data, savedUsers) {
