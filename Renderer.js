@@ -59,7 +59,11 @@ class Renderer {
   }
   renderSavedUsersDropdown(savedUsers){
      
-    const savedUsersDropdown = $(`<select id="saved-users-dropdown" name="saved-users-dropdown"></select>`);
+    const savedUsersDropdown = $(`
+    <select id="saved-users-dropdown" name="saved-users-dropdown">
+      <option value="" selected disabled hidden>Choose user</option>
+    </select>
+      `);
     this._savedUsersDropdownContainer.html("");
     for(let i = 0; i < savedUsers.length; i++){
       savedUsersDropdown.append(`<option value=${i}>${savedUsers[i].user.userName}</option>`)

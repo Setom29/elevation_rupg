@@ -12,7 +12,7 @@ const generateUser = () => {
       userAndFriendsData.friends,
       meatData
       )
-      
+
     renderer.renderData(
       apiManager.generatedPerson,
       apiManager.savedUsers
@@ -22,12 +22,14 @@ const generateUser = () => {
 
 $("#generate-user").on("click", generateUser);
 $("#save-user").on("click", () => {
-  apiManager.savedUsers = apiManager.generatedPerson;
+  apiManager.savePerson();
   renderer.renderData(apiManager.generatedPerson, apiManager.savedUsers);
 });
 $("#load-user").on("click", () => {
   const savedUsersDropdown = $("#saved-users-dropdown")
-  renderer.renderData(apiManager.savedUsers[parseInt(savedUsersDropdown.val())], apiManager.savedUsers);
+  if (savedUsersDropdown.val()){
+    renderer.renderData(apiManager.savedUsers[parseInt(savedUsersDropdown.val())], apiManager.savedUsers);
+  }
 });
 
 generateUser();

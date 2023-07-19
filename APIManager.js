@@ -20,23 +20,18 @@ class APIManager {
   }
 
   get generatedPerson() {
-    return APIManager.getCopy({
-      "user": this._generatedPerson.user,
-      "quote": this._generatedPerson.quote,
-      "pokemon": this._generatedPerson.pokemon,
-      "friends": this._generatedPerson.friends,
-      "meat": this._generatedPerson.meat
-    });
+    return this._generatedPerson.getPersonData();
   }
-
   set generatedPerson(person) {
     this._generatedPerson = person;
   }
 
-  get savedUsers() {
-    return APIManager.getCopy(this._savedUsers);
+  savePerson() {
+    this._savedUsers.push(this._generatedPerson);
   }
-
+  get savedUsers() {
+    return APIManager.getCopy(this._savedUsers.map(person => person.getPersonData()));
+  }
   set savedUsers(val) {
     this._savedUsers.push(val);
   }
@@ -123,34 +118,44 @@ class PersonData {
     this._meat = meat;
   }
 
-  get user(){
-    return APIManager.getCopy(this._user)
+  getPersonData() {
+    return APIManager.getCopy({
+      user: this._user,
+      quote: this._quote,
+      pokemon: this._pokemon,
+      friends: this._friends,
+      meat: this._meat,
+    });
   }
-  set user(val){
-    this._user = val
+
+  get user() {
+    return APIManager.getCopy(this._user);
   }
-  get quote(){
-    return APIManager.getCopy(this._quote)
+  set user(val) {
+    this._user = val;
   }
-  set quote(val){
-    this._quote = val
+  get quote() {
+    return APIManager.getCopy(this._quote);
   }
-  get pokemon(){
-    return APIManager.getCopy(this._pokemon)
+  set quote(val) {
+    this._quote = val;
   }
-  set pokemon(val){
-    this._pokemon = val
+  get pokemon() {
+    return APIManager.getCopy(this._pokemon);
   }
-  get friends(){
-    return APIManager.getCopy(this._friends)
+  set pokemon(val) {
+    this._pokemon = val;
   }
-  set friends(val){
-    this._friends = val
+  get friends() {
+    return APIManager.getCopy(this._friends);
   }
-  get meat(){
-    return APIManager.getCopy(this._meat)
+  set friends(val) {
+    this._friends = val;
   }
-  set meat(val){
-    this._meat = val
+  get meat() {
+    return APIManager.getCopy(this._meat);
+  }
+  set meat(val) {
+    this._meat = val;
   }
 }
