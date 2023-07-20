@@ -110,10 +110,11 @@ class APIManager {
   }
 
   getGIF(pokemonPromise) {
+    // https://giphy.com/embed/rAm0u2k17rM3e
     return pokemonPromise.then((data) =>
       this.fetchData(this.gifsURL + data.pokemonName).then((data) =>{
         if (data.data.length === 0){
-          return "https://giphy.com/embed/W04QVzelTHsNW" // if result is empty
+          return "https://giphy.com/embed/W04QVzelTHsNW" // if result is empty 
         } else {
           return data.data[0].embed_url
         }
