@@ -130,3 +130,14 @@ button {
     padding: 1vw;
     font-size: 1vmax;
 }
+
+#saved-users-dropdown {
+    width: 100%;
+    max-width: 300px;
+    overflow: hidden;
+    font-size: 25px;
+    background-color: #27ae60;
+    box-shadow: 1px 1px 3px black;
+    border-bottom-right-radius: 4px;
+    color: white;
+}

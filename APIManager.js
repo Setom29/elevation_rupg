@@ -27,10 +27,20 @@ class APIManager {
   }
 
   savePerson() {
+    for (let i = 0; i < this._savedUsers.length; i++) {
+      if (
+        JSON.stringify(this._generatedPerson.getPersonData()) ===
+        JSON.stringify(this._savedUsers[i].getPersonData())
+      ) {
+        return;
+      }
+    }
     this._savedUsers.push(this._generatedPerson);
   }
   get savedUsers() {
-    return APIManager.getCopy(this._savedUsers.map(person => person.getPersonData()));
+    return APIManager.getCopy(
+      this._savedUsers.map((person) => person.getPersonData())
+    );
   }
   set savedUsers(val) {
     this._savedUsers.push(val);
