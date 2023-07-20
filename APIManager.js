@@ -9,6 +9,9 @@ class APIManager {
     this._quoteURL = "https://api.kanye.rest";
     this._meatURL =
       "https://baconipsum.com/api/?type=all-meat&format=json&paras=";
+
+    this.gifsURL =
+      "https://api.giphy.com/v1/gifs/search?api_key=kH6TdS5ZJ3HHIoxp4Mxsm8PdBiVkWL6s&limit=1&offset=0&rating=g&lang=en&bundle=messaging_non_clips&q=";
   }
 
   static getRandomNumber(min, max) {
@@ -90,6 +93,7 @@ class APIManager {
       this._pokemonURL + APIManager.getRandomNumber(1, 1010).toString() + "/"
     ).then((data) => {
       return {
+        pokemonType: data.types[0].type.name,
         pokemonPictureLink: data.sprites.front_default,
         pokemonName: data.name,
       };
@@ -104,28 +108,43 @@ class APIManager {
       this._meatURL + APIManager.getRandomNumber(1, 3).toString()
     );
   }
-  getAllData() {
-    const userAndFriendsPromise = apiManager.getUserAndFriendsData();
-    const pokemonPromise = apiManager.getPokemonData();
-    const quotePromise = apiManager.getQuoteData();
-    const meatPromise = apiManager.getMeatData();
 
+  getGIF(pokemonPromise) {
+    return pokemonPromise.then((data) =>
+      this.fetchData(this.gifsURL + data.pokemonName).then((data) =>{
+        if (data.data.length === 0){
+          return "https://giphy.com/embed/W04QVzelTHsNW" // if result is empty
+        } else {
+          return data.data[0].embed_url
+        }
+      })
+    );
+  }
+
+  getAllData() {
+    const userAndFriendsPromise = this.getUserAndFriendsData();
+    const pokemonPromise = this.getPokemonData();
+    const quotePromise = this.getQuoteData();
+    const meatPromise = this.getMeatData();
+    const gifPromise = this.getGIF(pokemonPromise);
     return Promise.all([
       userAndFriendsPromise,
       pokemonPromise,
       quotePromise,
       meatPromise,
+      gifPromise,
     ]);
   }
 }
 
 class PersonData {
-  constructor(user, quote, pokemon, friends, meat) {
+  constructor(user, quote, pokemon, friends, meat, gif) {
     this._user = user;
     this._quote = quote;
     this._pokemon = pokemon;
     this._friends = friends;
     this._meat = meat;
+    this._pokemonGIF = gif;
   }
 
   getPersonData() {
@@ -135,6 +154,7 @@ class PersonData {
       pokemon: this._pokemon,
       friends: this._friends,
       meat: this._meat,
+      pokemonGIF: this._pokemonGIF,
     });
   }
 
@@ -167,5 +187,11 @@ class PersonData {
   }
   set meat(val) {
     this._meat = val;
+  }
+  get pokemonGIF() {
+    return APIManager.getCopy(this._pokemonGIF);
+  }
+  set pokemonGIF(val) {
+    this._pokemonGIF = val;
   }
 }

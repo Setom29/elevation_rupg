@@ -4,13 +4,14 @@ const apiManager = new APIManager();
 
 const generateUser = () => {
   apiManager.getAllData().then((promiseResults) => {
-    let [userAndFriendsData, pokemonData, quoteData, meatData] = promiseResults;
+    let [userAndFriendsData, pokemonData, quoteData, meatData, gifData] = promiseResults;
     apiManager.generatedPerson = new PersonData(
       userAndFriendsData.user, 
       quoteData.quote, 
       pokemonData,
       userAndFriendsData.friends,
-      meatData
+      meatData,
+      gifData
       )
 
     renderer.renderData(

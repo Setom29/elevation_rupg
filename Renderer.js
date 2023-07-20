@@ -11,6 +11,11 @@ class Renderer {
     this._pokemonContainer = $(".pokemon-container");
     this._meatContainer = $(".meat-container")
     this._savedUsersDropdownContainer = $("#saved-users-dropdown-container")
+    this._gifContainer = $("#pokemon-gif-container")
+
+    this._pokemonTypesMap = {"normal": "#B7B8A9",  "fire":"#E85247", "water": "#53A6FB", "electric":"#FBD142", "grass":"#83D26F", 
+    "ice":"#79D2FB", "fighting": "#C46C5D", "poison": "#B56AA8", "ground": "#E2C46D", "flying": "#9BA7FD", "psychic": "#E663A6", 
+    "bug": "#B7C440", "rock": "#C5B77C", "ghost": "#7D7BC6", "dragon": "#7E66DB", "dark": "#8C6F60", "steel": "#B6B6C5", "fairy": "#EBA5F1"}
   }
   renderUserContainer(user) {
     const userInfoHTML = this._userContainerTemplate({
@@ -71,13 +76,18 @@ class Renderer {
 
     this._savedUsersDropdownContainer.append(savedUsersDropdown);
   }
+  renderPokemonGIF(gif){
+    this._gifContainer.attr('src', gif)
+  }
 
   renderData(data, savedUsers) {
+    document.body.style.backgroundColor = this._pokemonTypesMap[data.pokemon.pokemonType]
     this.renderPokemonContainer(data.pokemon);
     this.renderUserContainer(data.user);
     this.renderQuoteContainer(data.quote);
     this.renderFriendsContainer(data.friends);
     this.renderMeatContainer(data.meat);
+    this.renderPokemonGIF(data.pokemonGIF)
     if (savedUsers.length !== 0){
       this.renderSavedUsersDropdown(savedUsers)
     }
